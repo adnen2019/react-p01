@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { Component } from 'react';
 import './App.css';
 
-class About {
+class Data extends Component {
+  
     render(){
   return (
     <div >
     About works!
     </div>
   );
-}}
-
-export default About;
+}
+}
+export default Data;
+    

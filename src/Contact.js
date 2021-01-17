@@ -4,89 +4,164 @@ import Data from './Data.js';
 import DataSubmitted from './DataSubmitted.js';
 
 class Contact extends Component {
+  //  name_err=false ;
     constructor(){
         super();
+       console.log("first log");
         this.state={
             name:"",
             sname:"",
             email:"",
-            mdp:""
-        }
-        this.handleChange=this.handleChange.bind(this);
+            mdp:"",
+            names:"",
+          snames:"",
+          emails:"",
+          mdps:"",
+          name_err:true ,
+          sname_err:true ,
+          mdp_err:true ,
+          email_err:true
+        };
+         
 
+        this.handleChange=this.handleChange.bind(this);
+        this.handleSubmit=this.handleSubmit.bind(this);
+        this.handleBlur=this.handleBlur.bind(this);
         }
+        handleSubmit(event){
+          console.log("submit log");
+          this.setState({
+            name:"",
+            sname:"",
+            email:"",
+            mdp:"",
+            names:this.state.name,
+            snames:this.state.sname,
+            emails:this.state.email,
+            mdps:this.state.mdp
+          })
+          event.preventDefault();
+         console.log(this.state);         
+      }
     handleChange(event){
+      console.log("change log");
         const{name,value}=event.target;
+        this.setState({
+          [name]:value
+        })
+    }
+    handleBlur(event){
+      console.log("Blur log");
+      const{name,value}=event.target;
+      if(value===""){
+        if(name==="name"){
+          this.setState({name_err:false})
+        }
+        if(name==="sname"){
+          this.setState({sname_err:false})
+        }
+        if(name==="email"){
+          this.setState({email_err:false})
+        }
+        if(name==="mdp"){
+          this.setState({mdp_err:false})
+        }
+
+      }
+      
+       else {
+        if(name==="name"){
+          this.setState({name_err:true})
+        }
+        if(name==="sname"){
+          this.setState({sname_err:true})
+        }
+        if(name==="email"){
+          this.setState({email_err:true})
+        }
+        if(name==="mdp"){
+          this.setState({mdp_err:true})
+        }
+       } 
+
+      
+      
+    
     }
     render(){
   return (
    
-<div class="container">
-  <form>
+<div className="container">
+  <form onSubmit={this.handleSubmit}>
     <div>
-    <h1 class="page center"> Contact-us  </h1>
+    <h1 className="page center"> Contact-us  </h1>
 
-    <label for="name"> Name  </label><br/>
+    <label htmlFor="name"> Name  <br/>
     <input
-      class="form-control"
+      className="red-border form-control "
       id="name"
       type="text"
       name='name'
       required
-      value={props.data.name}
-      onChange={props.handleChange}
+        value={this.state.name}
+       onChange={this.handleChange}
+      onBlur={this.handleBlur}
        />
-      <br/>
-      <div class="text-center help-block" >This field is required!<br/></div>
+      
+      <div className="form-err text-center help-block" hidden={this.state.name_err}>This field is required!<br/></div></label>
 
   
-
-    <label for="sname"> Second name  </label><br/>
+      <br/>
+    <label htmlFor="sname"> Second name 
     <input  
-      class="form-control"
+      className="form-control"
       id="sname"
       type="text"
       name="sname"
       required
-      value={props.data.sname}
-      onChange={props.handleChange}
-
-       /><br/>
-       <div class="text-center help-block" >This field is required!<br/></div>
-
+      value={this.state.sname}
+      onChange={this.handleChange}
+      onBlur={this.handleBlur}
+       />
+     
+       <div className="form-err text-center help-block" hidden={this.state.sname_err} >This field is required!<br/></div></label>
+       <br/>
     
 
 
-    <label for="email"> E-mail  </label><br/>
+    <label htmlFor="email"> E-mail  
     <input
-      class="form-control"
+      className="form-control"
       id="email"
       type="email"
       name="email"
       required
-      value={props.data.email}
-      onChange={props.handleChange}
+      value={this.state.email}
+      onChange={this.handleChange}
+      onBlur={this.handleBlur}
       
-       /><br/>
-       <div class="text-center help-block" >Please enter a valid email!<br/></div>
-       
-    <label for="mdp"> Password  </label><br/>
+       />
+       <div className="form-err text-center help-block" hidden={this.state.email_err}>Please enter a valid email! <br/></div>
+       </label>
+       <br/>
+    <label htmlFor="mdp"> Password 
     <input
-      class="form-control"
+      className="form-control"
       id="mdp"
       type="password"
       name="mdp"
       required
-      value={props.data.mdp}
-      onChange={props.handleChange}
-       /><br/>
-       <div class="text-center help-block">This field is required!<br/></div>
-
+      value={this.state.mdp}
+      onChange={this.handleChange}
+      onBlur={this.handleBlur}
+       />
+       <div className="form-err text-center help-block" hidden={this.state.mdp_err}>This field is required!<br/></div>
+       </label>
 
        <br/>
-    <div class="text-center">
+    <div className="">
       <input
-      class=" btn btn-primary"
+      className=" btn btn-primary"
       type="submit"
       id="inscri"
       name="send"
@@ -99,14 +174,16 @@ class Contact extends Component {
       </div>
   </form>
   <br/>
-  <div class="row">
+  <div className="row">
    
-    <div class="col-6">
-      <DataSubmitted/>
+    <div className="col-6">
+      <DataSubmitted {...this.state}
+      handleChange={this.handleChange}
+      />
     </div>
 
-    <div class="col-6">
-      <Data data={this.state}
+    <div className="col-6">
+      <Data {...this.state}
       handleChange={this.handleChange}/>
     </div>
 
